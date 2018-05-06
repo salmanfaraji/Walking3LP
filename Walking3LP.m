@@ -27,7 +27,7 @@ function varargout = Walking3LP(varargin)
 % © All rights reserved. ECOLE POLYTECHNIQUE FEDERALE DE LAUSANNE, Switzerland
 % BIOROB Laboratory, 2018
 % Walking3LP must be referenced when used in a published work 
-% See the LICENSE.txt file for more details.
+% See the LICENSE.pdf file for more details.
 
 % Begin initialization code - DO NOT EDIT
 gui_Singleton = 1;
@@ -56,8 +56,9 @@ function varargout = Walking3LP_OutputFcn(hObject, eventdata, handles)
 
 % --- Executes during object creation, after setting all properties.
 function figure1_CreateFcn(hObject, eventdata, handles)
+    GUI_script = mfilename();
     GUI_path = mfilename('fullpath');
-    GUI_path = GUI_path(1:(end-10));
+    GUI_path   = regexprep(GUI_path,GUI_script,'');
     addpath(GUI_path);
     initialize(GUI_path);
 
@@ -599,7 +600,7 @@ function figure1_CloseRequestFcn(hObject, eventdata, handles)
 % --- Executes on button press in record.
 function record_Callback(hObject, eventdata, handles)
     if handles.record.Value == 1
-        str = increment_str(handles.photoname.String, 'avi');
+        str = increment_str(handles.moviename.String, 'avi');
         handles.axes1.UserData.aviobj = VideoWriter(str);
         handles.axes1.UserData.aviobj.Quality = 90;
         handles.axes1.UserData.aviobj.open();
