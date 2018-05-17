@@ -24,7 +24,7 @@ function varargout = Walking3LP(varargin)
 % Author:         Salman Faraji
 % Date:           March 2018
 % Available from: https://biorob.epfl.ch/research/humanoid/walkman
-% © All rights reserved. ECOLE POLYTECHNIQUE FEDERALE DE LAUSANNE, Switzerland
+% Â© All rights reserved. ECOLE POLYTECHNIQUE FEDERALE DE LAUSANNE, Switzerland
 % BIOROB Laboratory, 2018
 % Walking3LP must be referenced when used in a published work 
 % See the LICENSE.pdf file for more details.
@@ -56,9 +56,8 @@ function varargout = Walking3LP_OutputFcn(hObject, eventdata, handles)
 
 % --- Executes during object creation, after setting all properties.
 function figure1_CreateFcn(hObject, eventdata, handles)
-    GUI_script = mfilename();
-    GUI_path = mfilename('fullpath');
-    GUI_path   = regexprep(GUI_path,GUI_script,'');
+    GUI_path = fileparts(mfilename('fullpath'));
+    GUI_path = [GUI_path '/'];
     addpath(GUI_path);
     initialize(GUI_path);
 
