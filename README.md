@@ -10,7 +10,7 @@ This project is licensed under the terms of a Non-Commercial Academic Source Cod
 
 Here is the list of publications involved:
 
-* Walking model: Faraji, Salman, and Auke Jan Ijspeert. "3LP: a linear 3D-walking model including torso and swing dynamics." the international journal of robotics research 36.4 (2017): 436-455. 
+* Walking model: Faraji, Salman, and Auke Jan Ijspeert. "3LP: a linear 3D-walking model including torso and swing dynamics." the international journal of robotics research 36.4 (2017): 436-455. [a link](https://journals.sagepub.com/doi/abs/10.1177/0278364917708248)
 
 * Walking controller: Faraji, Salman, Philippe Muellhaupt, and Auke Jan Ijspeert. "Imprecise dynamic walking with time-projection control." arXiv preprint arXiv:1811.03984 (2018). 
 
