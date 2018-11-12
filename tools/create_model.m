@@ -7,7 +7,7 @@ function s = create_model(model, Tds, Tstep)
 % © All rights reserved. ECOLE POLYTECHNIQUE FEDERALE DE LAUSANNE, Switzerland
 % BIOROB Laboratory, 2018
 % Walking3LP must be referenced when used in a published work 
-% See the LICENSE.txt file for more details.
+% See the LICENSE.pdf file for more details.
 
 subindex = @(A,r,c) A(r,c);
 if nargin < 3
@@ -18,9 +18,9 @@ end
 s = full_model(model, Tstep-Tds, Tds);
 s.drag = zeros(4,1);
 
-s.create_gait = @(sce,type) create_gait(sce,type);
-function sol = create_gait(sce,type)
-    sol = @(vdes) solution(sce, vdes, type);
+s.create_gait = @(sce, cop1, cop2) create_gait(sce, cop1, cop2);
+function sol = create_gait(sce, cop1, cop2)
+    sol = @(vdes) solution(sce, vdes, cop1, cop2);
 end
 
 end

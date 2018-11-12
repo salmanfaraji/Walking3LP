@@ -4,10 +4,10 @@ function model = add_mass(model,m,u,index)
 % Author:         Salman Faraji
 % Date:           March 2018
 % Available from: https://biorob.epfl.ch/research/humanoid/walkman
-% © All rights reserved. ECOLE POLYTECHNIQUE FEDERALE DE LAUSANNE, Switzerland
+% ï¿½ All rights reserved. ECOLE POLYTECHNIQUE FEDERALE DE LAUSANNE, Switzerland
 % BIOROB Laboratory, 2018
 % Walking3LP must be referenced when used in a published work 
-% See the LICENSE.txt file for more details.
+% See the LICENSE.pdf file for more details.
 
 % in this file we update main parameters used by 3LP
 % index = 1 : r.hand =      [(0.0060 + 0.0065 + 0.0061)/3  (0.506 + 0.1802 + 0.3624)/3  (188 + 170)/2/1741];
@@ -39,4 +39,4 @@ for i=1:8
     end
 end
 
-model = model_geom(M_new, model.L, model); 
+model = model_geom(M_new, model.L, model ,model.theta, model.slope); 

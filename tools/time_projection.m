@@ -5,10 +5,10 @@ function [disc_feedback, cont_feedback, empty_feedback, data] = ...
 % Author:         Salman Faraji
 % Date:           March 2018
 % Available from: https://biorob.epfl.ch/research/humanoid/walkman
-% © All rights reserved. ECOLE POLYTECHNIQUE FEDERALE DE LAUSANNE, Switzerland
+% All rights reserved. ECOLE POLYTECHNIQUE FEDERALE DE LAUSANNE, Switzerland
 % BIOROB Laboratory, 2018
 % Walking3LP must be referenced when used in a published work 
-% See the LICENSE.txt file for more details.
+% See the LICENSE.pdf file for more details.
 
 % conversion to Y=SX space, which separates constraints
 P = size(Ch,1);

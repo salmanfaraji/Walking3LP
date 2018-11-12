@@ -7,7 +7,7 @@ function [outGeom, outInfo] = convert(int,s,time)
 % © All rights reserved. ECOLE POLYTECHNIQUE FEDERALE DE LAUSANNE, Switzerland
 % BIOROB Laboratory, 2018
 % Walking3LP must be referenced when used in a published work 
-% See the LICENSE.txt file for more details.
+% See the LICENSE.pdf file for more details.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % model parameter

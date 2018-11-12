@@ -1,4 +1,4 @@
-function cost = energetics(X,log,model,f)
+function cost = energetics(X,log,model,f,initial_mass)
 
 % This function estimates the metabolic power of a given gait
 % Author:         Salman Faraji
@@ -7,7 +7,7 @@ function cost = energetics(X,log,model,f)
 % © All rights reserved. ECOLE POLYTECHNIQUE FEDERALE DE LAUSANNE, Switzerland
 % BIOROB Laboratory, 2018
 % Walking3LP must be referenced when used in a published work 
-% See the LICENSE.txt file for more details.
+% See the LICENSE.pdf file for more details.
 
 slope = - model.slope;
 COS = cos(slope);
@@ -59,7 +59,7 @@ wmax = 12*8/6;
 thigh_length = model.l_leg(1);
 g = @(v) (v>0).* (0.07+2.5*v) + (v<=0).* (0.07-0.08*v);
 phi = @(prof) g( [diff(prof)./diff(log.time); 0]/wmax );
-integ = @(prof) sum( thigh_length * model.M * model.g * ...
+integ = @(prof) sum( thigh_length * model.M * model.g * (1-model.rg) * ...
                      cosB .* sin(prof/2) .* phi(prof) * wmax) * ...
                      mean(diff(log.time));
 cost.Ews = integ(profile);
@@ -67,7 +67,7 @@ cost.Ews = integ(profile);
 % final calculation
 cost.Total = (cost.E3lp + cost.Evr + cost.Egc)/cost.Efficiency + cost.Ews;
 cost.Total = real(cost.Total);
-cost.CoT = cost.Total/DX/model.M/model.g; 
+cost.CoT = cost.Total/DX/initial_mass/model.g; 
 
 % [[cost.E3lp cost.Evr cost.Egc]/cost.Efficiency cost.Ews]/model.M/DX
 

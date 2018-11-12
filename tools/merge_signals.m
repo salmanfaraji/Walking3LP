@@ -7,7 +7,7 @@ function log = merge_signals(log, int, X)
 % © All rights reserved. ECOLE POLYTECHNIQUE FEDERALE DE LAUSANNE, Switzerland
 % BIOROB Laboratory, 2018
 % Walking3LP must be referenced when used in a published work 
-% See the LICENSE.txt file for more details.
+% See the LICENSE.pdf file for more details.
 
 names = fieldnames(int);
 for i=1:length(names)

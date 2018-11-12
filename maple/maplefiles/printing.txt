@@ -1,0 +1,139 @@
+myprint:=proc(X,name,fd) 
+	fprintf(fd,SubstituteAll(C(X,deducetypes=false,declare=[cg::float],output=string,resultname=cg),"cg",name)):
+	fprintf(fd,"\n"):
+end proc:
+
+pack:=proc(X,name)
+	convert(Matrix(RowDimension(X),ColumnDimension(X),symbol=name)(SearchArray(X))=~X(SearchArray(X)),list):
+end proc:
+
+myprintpack:=proc(X,name,fd)
+	fprintf(fd,"%s = CmatrixComplex::Zero(%d,%d);\n",name,RowDimension(X),ColumnDimension(X)):
+	myprint(pack(X,cg),name,fd):
+	fprintf(fd,"\n"):
+end proc:
+
+cppfile:=proc(str,state,B0,Bt,UrList,VrList,Sig,SigName,aux,w)
+	local fd,filename,filestr:
+	filename:= sprintf("../get_maple_%s.cpp",str):
+	fclose(filename):
+	fd:=fopen(filename,WRITE):
+	fprintf(fd,"#include \"THREELP.hpp\"\nusing namespace std;\n\n"):
+
+	######################################################
+	fprintf(fd,sprintf("void THREELP::get_maple_%s(THREELPMatrices &out)\n{\n",str)):
+	fprintf(fd,"\n \n"):
+	fprintf(fd,"CmatrixComplex "): myprintpack(B0,"A0",fd):
+	fprintf(fd,"CmatrixComplex "): myprintpack(Bt,"At",fd):
+	
+	for i to Size(aux, 2) do
+		fprintf(fd,"complex<double> %s; \n",convert(lhs(aux[i]),string)):
+	end do:
+	myprint(aux,"",fd):
+	
+	fprintf(fd,"out.w = CvectorComplex(4);\n"):	
+	myprint(w,"out.w",fd):
+	
+	for i to Size(UrList, 2) do
+		myprintpack(UrList[i],sprintf("out.Ur%d",i),fd):
+		myprintpack(VrList[i],sprintf("out.Vr%d",i),fd):
+	end do:
+	fprintf(fd,"}\n\n"):
+
+	######################################################
+	fprintf(fd,sprintf("void THREELP::vis_maple_%s(THREELPSignals &out, double t, Cvector state)\n{\n",str)):
+
+	for i to Dimension(SigName) do 
+		fprintf(fd, "Cvector %s_ = Cvector(3); \n",SigName[i]):
+	end do:
+	fprintf(fd,"\n"):
+	for i to Dimension(state) do 
+		if IsZero(Search("[", convert(state[i], string))) then fprintf(fd,"double "): end if:
+		fprintf(fd,"%s = state[%d];\n", convert(state[i], string), i-1):
+	end do:
+	fprintf(fd,"\n"):
+	for i to Dimension(SigName) do
+		myprint(Sig[[3*i-2, 3*i-1, 3*i]], sprintf("%s_",convert(SigName[i], string)) ,fd): 
+		fprintf(fd,"out.%s = %s_; \n",SigName[i],SigName[i]):
+	end do:
+	fprintf(fd,"}\n"):
+
+	######################################################
+	fclose(fd):
+	filestr := FileTools[Text][ReadFile](filename):
+	filestr := SubstituteAll(SubstituteAll(SubstituteAll(filestr, "]", ")"), "[", "("), ")(", ","):
+	FileTools[Remove](filename):
+	FileTools[Text][WriteFile](filename, filestr):
+end proc:
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+matlabmyprint := proc (X, name) 
+	printf(SubstituteAll(Matlab([codegen[optimize](X)], deducetypes = false, output = string), "unknown", name));
+end proc: 
+
+matlabPrintMat := proc (X, name) 
+	printf("%s = zeros(%d,%d); \n", name, RowDimension(X), ColumnDimension(X)); 
+	printf(SubstituteAll(Matlab([codegen[optimize](pack(X, XXX))], deducetypes = false, output = string), "XXX", name));
+end proc:
+
+matlabfile:= proc(str,state,B0,Bt,UrList,VrList,Sig,SigName,aux,w)
+	writeto(sprintf("../get_maple_%s.m",str)); 
+	printf("function out = get_maple_%s(scenario) \nout = struct(); \nmaple_model; \n\n\n",str); 
+
+	matlabPrintMat(B0, "A0"); 
+	printf("out.A0 = A0; \n");
+	matlabPrintMat(Bt, "At"); 
+	printf("out.At = At; \n");
+	Matlab(aux); 
+	matlabmyprint(w, "out.w"); 
+	printf("\n \n \n"); 
+
+	for i to 6 do 
+		matlabPrintMat(UrList[i], sprintf("out.Ur%d", i)); 
+		matlabPrintMat(VrList[i], sprintf("out.Vr%d", i));
+	end do; 
+	######################################################
+	writeto(sprintf("../vis_maple_%s.m",str)); 
+	printf("function out = vis_maple_%s(state_vector,scenario,t) \nout = struct(); \nmaple_model; \n\n\n",str);
+	printf(Matlab(convert(`~`[`=`](state, Vector(Dimension(state), symbol = state_vector)), list), output = string)); 
+	printf("\n \n \n"); 
+	for i to Dimension(SigName) do 
+		matlabmyprint(Sig[[3*i-2, 3*i-1, 3*i]], sprintf("%s_", convert(SigName[i], string))); printf("\n");
+	end do;
+	for i to Dimension(SigName) do 
+		printf("out.%s = %s_; \n",SigName[i],SigName[i]);
+	end do;
+	writeto(terminal);
+end proc:
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,18 +1,17 @@
-function initialize(str)
+function m = sks(x)
 
-% This function initializes all the paths needed
+% This function calculates a skew-symmetric matrix
 % Author:         Salman Faraji
 % Date:           March 2018
 % Available from: https://biorob.epfl.ch/research/humanoid/walkman
 % © All rights reserved. ECOLE POLYTECHNIQUE FEDERALE DE LAUSANNE, Switzerland
 % BIOROB Laboratory, 2018
 % Walking3LP must be referenced when used in a published work 
-% See the LICENSE.TXT file for more details.
+% See the LICENSE.pdf file for more details.
 
-if nargin < 1
-    str = [];
-end
-addpath([str 'basic']);
-addpath([str 'anatomy']);
-addpath([str 'maple']);
-addpath([str 'tools']);
+m(1,2) = -x(3);
+m(1,3) = x(2);
+m(2,3) = -x(1);
+m(2,1) = x(3);
+m(3,1) = -x(2);
+m(3,2) = x(1);

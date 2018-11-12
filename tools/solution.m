@@ -1,13 +1,13 @@
-function X = solution(s,vdes,type)
+function X = solution(s,vdes,cop1,cop2)
 
 % This function finds a numeric gait solution for 3LP
 % Author:         Salman Faraji
 % Date:           March 2018
 % Available from: https://biorob.epfl.ch/research/humanoid/walkman
-% © All rights reserved. ECOLE POLYTECHNIQUE FEDERALE DE LAUSANNE, Switzerland
+% ï¿½ All rights reserved. ECOLE POLYTECHNIQUE FEDERALE DE LAUSANNE, Switzerland
 % BIOROB Laboratory, 2018
 % Walking3LP must be referenced when used in a published work 
-% See the LICENSE.txt file for more details.
+% See the LICENSE.pdf file for more details.
 
 index = [1 5:6 9:10 19:25];
 y = [-vdes*s.Tstep; ...
@@ -16,21 +16,17 @@ y = [-vdes*s.Tstep; ...
      s.drag; ...
      sin(s.model.theta); sin(s.model.slope); 1];
 
-if type==1
-    mg = (s.model.m1+2*s.model.m2) * s.model.g * (1-s.model.rg);
-    tcop = - mg * (-s.cop_length/2 + abs(s.cop_length)/2);
-    alpha = abs(s.cop_length)/s.model.l_leg(3);
-    center = (s.model.metatarsal*(1-alpha)+s.model.l_leg(3)*alpha)/2;
-    tcop = - mg * (-s.cop_length/2 + center);
-    rtcop = - mg * s.cop_length;
-    y = [y; tcop;0;rtcop;0];
-    index = [index 13:14 17:18];
+if nargin<3
+    cop1 = 0;
+    cop2 = s.cop_length;
 end
 
-if type==2
-    index = [index 8];
-    y = [y; 0];
-end
+mg = (s.model.m1+2*s.model.m2) * s.model.g * (1-s.model.rg);
+
+tcop = - mg * cop1;
+rtcop = - mg * (cop2-cop1);
+y = [y; tcop;0;rtcop;0];
+index = [index 13:14 17:18];
 
 if ~isempty(s.step_width)
     index = [index 2];

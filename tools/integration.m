@@ -4,10 +4,10 @@ function [log,events] = integration(s,X0,Nsteps,options)
 % Author:         Salman Faraji
 % Date:           March 2018
 % Available from: https://biorob.epfl.ch/research/humanoid/walkman
-% © All rights reserved. ECOLE POLYTECHNIQUE FEDERALE DE LAUSANNE, Switzerland
+% ï¿½ All rights reserved. ECOLE POLYTECHNIQUE FEDERALE DE LAUSANNE, Switzerland
 % BIOROB Laboratory, 2018
 % Walking3LP must be referenced when used in a published work 
-% See the LICENSE.txt file for more details.
+% See the LICENSE.pdf file for more details.
 
 % filming
 if(options.ifvideo) 
@@ -85,7 +85,7 @@ for tot_steps=1:Nsteps
             
             % camera update
             options.camera = options.camera + [options.vdes(1,2)*dt 0 0] + ...
-                (int.com-options.camera)*diag([dt*5 dt*1 dt*2]);
+                (int.X-options.camera)*diag([dt*5 dt*1 dt*2]);
             
             f = fieldnames(int);
             for i=1:length(f)
@@ -106,11 +106,11 @@ for tot_steps=1:Nsteps
             % calculate control gains
             for i=1:4
                 XX = past * Y;
-                XX(i*2-1) = XX(i*2-1) + 1;
+                XX(i*2-1) = XX(i*2-1) + 1;                   
                 fbb = s.feedback(Y, XX, X0, past, remaining, s);
                 XX(s.cont.input) = XX(s.cont.input) + fbb;
                 XXend = remaining * XX;
-                gain(1,i) = (XXend(1)-XXend(3)) - (Y(1)-Y(3));
+                gain(1,i) = (XXend(1)-XXend(3)) - (Y(9)-Y(3));
             end
             int.gain = gain;
         end

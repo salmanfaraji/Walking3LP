@@ -1,0 +1,23 @@
+#restart; 
+#with(Student[MultivariateCalculus]); 
+#with(LinearAlgebra); 
+#with(CodeGeneration); 
+#with(ArrayTools); 
+#with(StringTools); 
+#currentdir();
+
+read "model.txt"; 
+read "DS.txt"; 
+read "differentialsystem.txt"; 
+read "printing.txt"; 
+matlabfile(suffix, state, B0, Bt, UrList, VrList, Sig, SigName, aux, w); 
+cppfile(suffix, state, B0, Bt, UrList, VrList, Sig, SigName, aux, w);
+
+read "model.txt"; 
+read "SS.txt"; 
+read "differentialsystem.txt"; 
+read "printing.txt"; 
+matlabfile(suffix, state, B0, Bt, UrList, VrList, Sig, SigName, aux, w); 
+cppfile(suffix, state, B0, Bt, UrList, VrList, Sig, SigName, aux, w);
+
+

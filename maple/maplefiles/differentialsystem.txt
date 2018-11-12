@@ -1,0 +1,58 @@
+replacement := {X[1] = X_[1], X[2] = X_[2], X2[1] = X2_[1], X2[2] = X2_[2], dX[1] = dX_[1], dX[2] = dX_[2], dX2[1] = dX2_[1], dX2[2] = dX2_[2], ddX[1] = ddX_[1], ddX[2] = ddX_[2], ddX2[1] = ddX2_[1], ddX2[2] = ddX2_[2]}:
+XX := <X2[1], X2[2], X[1], X[2], dX2[1], dX2[2], dX[1], dX[2], X3[1], X3[2], H2y, H2x, M3y, M3x, rH2y, rH2x, rM3y, rM3x, F1[1], F1[2], T1[2], T1[1], sin_theta, sin_slope, d>: 
+state := eval(XX, replacement):
+
+
+
+vars := convert(solve(convert(Concatenate(1, e1, e2, e3, e4, e5, e6, e7, e8, e9, e10, e11, e12), set), convert(Concatenate(1, <ddX[1], ddX[2], ddX2[1], ddX2[2]>, f1, f2, f3, F2, F3, t1, t2, t3, T2, T3), list)), Vector): 
+eq := convert(vars[1 .. 4], Vector): 
+dd := map(rhs, eq):
+
+
+
+B := <Jacobian(eval(map(rhs, eq), replacement), convert(state, list))>: 
+Bt := map(diff, B, t): 
+B0 := eval(B, t = 0): 
+b0 := Matrix(RowDimension(B0), ColumnDimension(B0), symbol = A0): 
+sB0 := b0*0: 
+sB0(SearchArray(B0)) := b0(SearchArray(B0)): 
+bt := Matrix(RowDimension(Bt), ColumnDimension(Bt), symbol = At): 
+sBt := bt*0: 
+sBt(SearchArray(Bt)) := bt(SearchArray(Bt)): 
+IsZero(simplify(map(rhs, eq) - MatrixVectorMultiply(MatrixAdd(B0, Bt*t), XX)));
+
+E := map(lhs, eq) - MatrixVectorMultiply(MatrixAdd(sB0, sBt*t), XX):
+solutions := dsolve(<E[1], E[2], E[3], E[4], eval(X[1], t = now) = X_[1], eval(diff(X[1], t), t = now) = dX_[1], eval(X2[1], t = now) = X2_[1], eval(diff(X2[1], t), t = now) = dX2_[1], eval(X[2], t = now) = X_[2], eval(diff(X[2], t), t = now) = dX_[2], eval(X2[2], t = now) = X2_[2], eval(diff(X2[2], t), t = now) = dX2_[2]>, [X[1], X[2], X2[1], X2[2]]): 
+solutions := simplify(eval(solutions, {t = now+t})):
+EX := convert(convert(eval(solutions, changes), list), Vector):
+eX := Concatenate(1, EX, map(diff, EX, t), state[9 .. 25] =~ state[9 .. 25] ):
+
+ 
+ 
+H := simplify(Jacobian(map(rhs, convert(eX, Vector)), convert(state, list))): 
+Vr := map(diff, H, now):
+Ur := eval(H, {now = 0}): 
+UrList := decompose(Ur, exponents): 
+VrList := decompose(Vr, exponents): 
+w := eval(map(diff, exponents[1 .. 4], t), t = 0): 
+
+
+IsZero(simplify(map(rhs, convert(eX, Vector))-MatrixVectorMultiply(H, state))); 
+IsZero(map(diff, Ur, now));
+IsZero(map(diff, Vr, now)); 
+not~(IsZero(Vr));
+not~(IsZero(Ur));
+
+
+VARS := map(rhs, vars): 
+lv := Concatenate(1, VARS[[1, 2]], 0, VARS[3 .. 4], 0, VARS[5 .. 13], F1, VARS[14 .. 19]): 
+LinVar := simplify(convert(eval(lv, replacement), Vector)): 
+LinVarNames := <"ddX", "ddX2", "f1", "f2", "f3", "F1", "F2", "F3">: 
+rv := Concatenate(1, torques[1 .. 9], T1, torques[10 .. 15], <ksag, klat, 0>): 
+RotVar := simplify(convert(eval(rv, replacement), Vector)): 
+RotVarNames := <"t1", "t2", "t3", "T1", "T2", "T3", "K">: 
+geom := eval(simplify(Concatenate(1, X, x2, x3, y1, y2, y3, X3, X2, X1, com, dcom, dX, dX2, X0)), replacement): 
+geomNames := <"X", "x2", "x3", "y1", "y2", "y3", "X3", "X2", "X1", "com", "dcom", "dX", "dX2", "X0">: 
+Sig := Concatenate(1, geom, LinVar, RotVar): 
+SigName := Concatenate(1, geomNames, LinVarNames, RotVarNames):
+

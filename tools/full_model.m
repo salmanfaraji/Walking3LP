@@ -4,10 +4,10 @@ function s = full_model(model, Tss, Tds)
 % Author:         Salman Faraji
 % Date:           March 2018
 % Available from: https://biorob.epfl.ch/research/humanoid/walkman
-% © All rights reserved. ECOLE POLYTECHNIQUE FEDERALE DE LAUSANNE, Switzerland
+% All rights reserved. ECOLE POLYTECHNIQUE FEDERALE DE LAUSANNE, Switzerland
 % BIOROB Laboratory, 2018
 % Walking3LP must be referenced when used in a published work 
-% See the LICENSE.txt file for more details.
+% See the LICENSE.pdf file for more details.
 
 s = struct();
 s.model = model;
@@ -20,7 +20,6 @@ s.SS = get_maple_SS(s);
 s.step_width = [];
 s.cop_length = model.l_leg(3);
 s.clearance = 0.05;
-
 
 s.HSS = @(now,T) real(    (s.SS.Ur1+s.SS.Vr1*now) ...
                         + (s.SS.Ur2+s.SS.Vr2*now) * exp(s.SS.w(1) * T) ...

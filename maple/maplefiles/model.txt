@@ -1,0 +1,77 @@
+
+grav := <g*sin_slope, 0, g*cos_slope>:
+X  := <X_[1](t) , X_[2](t) , h1*cos_slope>:
+X2 := <X2_[1](t), X2_[2](t), 0>: 
+X3 := <X3_[1]   , X3_[2]   , 0>: 
+F1 := Vector(3,symbol=F1_): F1[3]:=0:
+F2 := Vector(3,symbol=F2_): 
+F3 := Vector(3,symbol=F3_): 
+T1 := Vector(3,symbol=T1_): T1[3]:=0:
+T2 := Vector(3,symbol=T2_): 
+T3 := Vector(3,symbol=T3_): 
+f1 := Vector(3,symbol=f1_): 
+f2 := Vector(3,symbol=f2_): 
+f3 := Vector(3,symbol=f3_): 
+t1 := Vector(3,symbol=t1_): 
+t2 := Vector(3,symbol=t2_): 
+t3 := Vector(3,symbol=t3_): 
+local i: local j: 
+x1 := X: 
+x2 := X+<0, d*pw, 0>: 
+x3 := X+<0, -d*pw, 0>: 
+X1 := x1+<h4*sin_theta, 0, h4*cos_theta>: 
+X0 := x1+<h5*sin_theta, 0, h5*cos_theta>: 
+dX := map(diff, X, t): 
+dX2 := map(diff, X2, t):
+ddX := map(diff, dX, t): 
+ddX2 := map(diff, dX2, t):
+
+y1 := x1+<h3*sin_theta, 0, h3*cos_theta>: 
+y2 := x2+(X2-x2)*h2/h1: 
+y3 := x3+(X3-x3)*h2/h1: 
+com := (m1*y1+m2*y2+m2*y3)/(m1+m2+m2): 
+dcom := map(diff, com, t):
+Fpelvis := grav*rg*(m1+2*m2): 
+leg2 := (X2-x2)/h1: 
+leg3 := (X3-x3)/h1:
+w2 :=  CrossProduct(leg2, map(diff, leg2, t)):
+w3 :=  CrossProduct(leg3, map(diff, leg3, t)):
+dw2 :=  CrossProduct(leg2, map(diff, map(diff, leg2, t), t)):
+dw3 :=  CrossProduct(leg3, map(diff, map(diff, leg3, t), t)):
+dy1 := map(diff, y1, t):
+dy2 := map(diff, y2, t):
+dy3 := map(diff, y3, t):
+ksag := .5*m1*dy1[1]^2 + .5*m2*dy2[1]^2 + .5*m2*dy3[1]^2 + .5*I2*w2[2]^2 + .5*I3*w3[2]^2:
+klat := .5*m1*dy1[2]^2 + .5*m2*dy2[2]^2 + .5*m2*dy3[2]^2 + .5*I2*w2[1]^2 + .5*I3*w3[1]^2:
+
+
+
+
+
+e3 := f3 + F3 - grav*m2 - m2*map(diff, map(diff, y3, t), t):
+e2 := f2 + F2 - grav*m2 - m2*map(diff, map(diff, y2, t), t):
+e1 := f1 + F1 - grav*m1 - m1*map(diff, map(diff, y1, t), t) + Fpelvis : 
+e7 := f1 + f2 + f3:
+e4 := CrossProduct(X3-y3, F3) + CrossProduct(x3-y3, f3) + t3 + T3 - I3*dw3:
+e5 := CrossProduct(X2-y2, F2) + CrossProduct(x2-y2, f2) + t2 + T2 - I2*dw2:
+e6 := CrossProduct(X1-y1, F1) + CrossProduct(x1-y1, f1) + t1 + T1 + CrossProduct(x1-y1, Fpelvis):
+e8 := CrossProduct(x2-X, -f2) + CrossProduct(x3-X, -f3) - t1 - t2 - t3:
+
+
+
+
+
+
+
+
+
+decompose := proc (Xin,gam) 
+	local outList, Xlin, ee: 
+	Xlin := eval(eval(eval(eval(eval(Xin, {gam[1] = var1}), {gam[2] = var2}), {gam[3] = var3}), {gam[4] = var4}), {gam[5] = var5}):
+	outList := [eval(Xlin, {var1 = 0, var2 = 0, var3 = 0, var4 = 0, var5 = 0}), map(diff, Xlin, var1), map(diff, Xlin, var2), map(diff, Xlin, var3), map(diff, Xlin, var4), map(diff, Xlin, var5)]:
+	ee := simplify(Add(-Xin, Add(Add(outList[1], outList[6]*gam[5]), Add(Add(outList[2]*gam[1], outList[3]*gam[2]), Add(outList[4]*gam[3], outList[5]*gam[4]))))):
+	print(IsZero(ee)):
+	return outList:
+end proc:
+
+
