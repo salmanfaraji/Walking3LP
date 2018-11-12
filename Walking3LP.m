@@ -832,7 +832,7 @@ function applypush_Callback(hObject, eventdata, handles)
 
 % --- executes on mouse press in 5 pixel border or over text66.
 function text66_ButtonDownFcn(hObject, eventdata, handles)
-path = 'https://biorob.epfl.ch/research/humanoid/walkman';
+path = 'https://github.com/salmanfaraji/Walking3LP';
 web(path);
     
 % --- Executes on button press in exit.
