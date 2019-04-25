@@ -18,4 +18,4 @@ Here is the list of publications involved:
 
 * Estimation of energies: [Faraji, Salman, Amy Roning Wu and Auke Jan Ijspeert. Faraji, Salman, Amy R. Wu, and Auke J. Ijspeert. "A simple model of mechanical effects to estimate metabolic cost of human walking." Scientific reports 8.1 (2018): 10998.](https://www.nature.com/articles/s41598-018-29429-z)
 
-* Robotics application: [Faraji, Salman, Hamed Razavi, and Auke Jan Ijspeert. "Push recovery with stepping strategy based on time-projection control." arXiv preprint arXiv:1801.02151 (2018).](https://arxiv.org/abs/1801.02151) 
+* Robotics application: [Faraji, Salman, Hamed Razavi, and Auke Jan Ijspeert. "Bipedal walking and push recovery with a stepping strategy based on time-projection control." the international journal of robotics research 38.5 (2019): 587–611.](https://doi.org/10.1177/0278364919835606) 
