@@ -4,7 +4,7 @@ function cost = energetics(X,log,model,f,initial_mass)
 % Author:         Salman Faraji
 % Date:           March 2018
 % Available from: https://biorob.epfl.ch/research/humanoid/walkman
-% © All rights reserved. ECOLE POLYTECHNIQUE FEDERALE DE LAUSANNE, Switzerland
+% All rights reserved. ECOLE POLYTECHNIQUE FEDERALE DE LAUSANNE, Switzerland
 % BIOROB Laboratory, 2018
 % Walking3LP must be referenced when used in a published work 
 % See the LICENSE.pdf file for more details.
@@ -24,6 +24,9 @@ apex = max(max(log.Ankle2(:,3)),max(log.Ankle3(:,3)));
 bottom = min(min(log.Ankle2(:,3)),min(log.Ankle3(:,3)));
 param.foot_lift_height = apex - bottom;
 cost.Efficiency = param.ethaf(f);
+
+% WARNING
+param.foot_lift_height = 0.16;
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % cost model
@@ -68,7 +71,3 @@ cost.Ews = integ(profile);
 cost.Total = (cost.E3lp + cost.Evr + cost.Egc)/cost.Efficiency + cost.Ews;
 cost.Total = real(cost.Total);
 cost.CoT = cost.Total/DX/initial_mass/model.g; 
-
-% [[cost.E3lp cost.Evr cost.Egc]/cost.Efficiency cost.Ews]/model.M/DX
-
-

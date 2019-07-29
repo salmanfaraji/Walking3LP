@@ -109,7 +109,7 @@ function Walking3LP_OpeningFcn(hObject, eventdata, handles, varargin)
     guidata(hObject, handles);
     handles.torso_mass.Min = 0;
     handles.torso_mass.Max = 0;
-    handles.axes3.Visible = 0;
+    handles.axes3.Visible = 'off';
 
 function force_update(handles)
     quiver(handles.axes2,1.2,-0.9,0,1.6,'b','LineWidth',1.5,'MaxHeadSize',0.5);
@@ -811,7 +811,7 @@ function h = controllerlut_Callback(hObject, eventdata, handles)
     h = figure;
     copyobj(handles.axes3,h);
     ax = h.Children;
-    ax.Visible = 1;
+    ax.Visible = 'on';
     ax.Units = 'normalized';
     ax.Position = [0.1300 0.1100 0.7750 0.8150];
     ylabel(ax,'\Delta Footstep / e');
